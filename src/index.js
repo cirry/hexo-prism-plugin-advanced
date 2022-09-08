@@ -94,7 +94,7 @@ function PrismPlugin(data) {
   // Patch for caption support
   if (captionRegex.test(data.content)) {
     // Attempt to parse the code
-    data.content = data.content.replace(captionRegex, (origin, lang, caption, code) => {
+    data.content = data.content.replace(captionRegex, (origin, lang = 'js', caption, code) => {
       if (!lang || !caption || !code) return origin;
       return `<figcaption>${caption}</figcaption><pre><code class="${lang}">${code}</code></pre>`;
     })
