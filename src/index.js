@@ -94,23 +94,19 @@ function PrismPlugin(data) {
   // Patch for caption support
   if (captionRegex.test(data.content)) {
     // Attempt to parse the code
-    data.content = data.content.replace(captionRegex, (origin, lang = 'js', caption, code) => {
+    data.content = data.content.replace(captionRegex, (origin, lang, caption, code) => {
       if (!lang || !caption || !code) return origin;
       return `<figcaption>${caption}</figcaption><pre><code class="${lang}">${code}</code></pre>`;
     })
   }
 
-  data.content = data.content.replace(regex, (origin, lang = 'js', code) => {
+  data.content = data.content.replace(regex, (origin, lang , code) => {
     const lineNumbers = line_number ? 'line-numbers' : '';
     const startTag = `<pre class="${lineNumbers} language-${lang}"><code class="language-${lang}">`;
     const endTag = `</code></pre>`;
     code = unescape(code);
-    let parsedCode;
-    if (Prism.languages[lang]) {
-      parsedCode = Prism.highlight(code, Prism.languages[lang]);
-    } else {
-      parsedCode = code;
-    }
+    let parsedCode = Prism.highlight(code, Prism.languages[lang] || Prism.languages.autoit || 'js');
+
     if (line_number) {
       const match = parsedCode.match(/\n(?!$)/g);
       const linesNum = match ? match.length + 1 : 1;
