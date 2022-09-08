@@ -25,7 +25,7 @@ const captionRegex = /<p><code>(?![\s\S]*<code)(.*?)\s(.*?)\n([\s\S]*)<\/code><\
  * @return {String}
  */
 function unescape(str) {
-  if (!str || str === null) return '';
+  if (!str) return '';
   const re = new RegExp('(' + Object.keys(map).join('|') + ')', 'g');
   return String(str).replace(re, (match) => map[match]);
 }
@@ -100,12 +100,12 @@ function PrismPlugin(data) {
     })
   }
 
-  data.content = data.content.replace(regex, (origin, lang, code) => {
+  data.content = data.content.replace(regex, (origin, lang = 'js', code) => {
     const lineNumbers = line_number ? 'line-numbers' : '';
     const startTag = `<pre class="${lineNumbers} language-${lang}"><code class="language-${lang}">`;
     const endTag = `</code></pre>`;
     code = unescape(code);
-    let parsedCode = '';
+    let parsedCode;
     if (Prism.languages[lang]) {
       parsedCode = Prism.highlight(code, Prism.languages[lang]);
     } else {
@@ -186,7 +186,7 @@ function importAssets(code, data) {
   if (code.indexOf(imports) > -1) {
     return code;
   }
-  return code.replace(/<\s*\/\s*head\s*>/, imports + '</head>');;
+  return code.replace(/<\s*\/\s*head\s*>/, imports + '</head>');
 }
 
 // Register prism plugin
