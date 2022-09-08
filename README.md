@@ -7,7 +7,7 @@ Hexo's default code highlight plugin.
 
 ## Install
 ```
-npm i hexo-prism-plugin-advanced
+npm i hexo-prism-plugin-advanced --save
 ```
 ## Usage
 Firstly, you should edit your `_config.yml` by adding following configuration.
